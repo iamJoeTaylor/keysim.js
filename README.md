@@ -3,6 +3,8 @@
 Simulate typing into DOM elements. This can be used anywhere you need to
 simulate user keystrokes, but is particularly useful in testing environments.
 
+[![build status](https://travis-ci.org/eventualbuddha/keysim.js.svg)](https://travis-ci.org/eventualbuddha/keysim.js)
+
 ## Installation
 
 ```sh
@@ -103,3 +105,20 @@ keyup    keyCode=49  (1)   which=49  (1)   charCode=0
 keyup    keyCode=16        which=16        charCode=0        
 keydown  keyCode=91  ([)   which=91  ([)   charCode=0        
 ```
+
+## Building
+
+Ensure that the keysim dependencies are installed (`npm install`) and that the
+[`gobble`](https://github.com/gobblejs/gobble) build tool is installed
+(`npm install -g gobble-cli`). Then run `npm run build` to re-create
+`dist/keysim.js`.
+
+## Testing
+
+To run the tests in Chrome, run `npm run test:browser`. To run the tests in node,
+run `npm run test:node`. Running `npm test` will run both.
+
+## Contributing
+
+Fork the project, create a branch, and fix your bug or add your feature on that
+branch. Be sure to add tests for your bug fix or feature.

@@ -1,7 +1,14 @@
+require("es5-shim");
+
 var assert = require('assert');
 var Keyboard = require('../dist/keysim').Keyboard;
 var Keystroke = require('../dist/keysim').Keystroke;
-var jsdom = require('jsdom');
+
+var isInNode = require('detect-node');
+
+// jsdom is required when running in node. Browsers have real DOM.
+var jsdom = isInNode ? require('jsdom') : null;
+var addEventHandler = require('add-event-handler');
 
 function captureEvents(element, body) {
   var events = [];
@@ -11,7 +18,7 @@ function captureEvents(element, body) {
     }
   };
   ['keydown', 'keypress', 'keyup', 'textInput'].forEach(function(type) {
-    element.addEventListener(type, handler);
+      addEventHandler(element, type, handler);
   });
   body();
   return events;
@@ -21,6 +28,13 @@ function captureEventSummaries(element, body) {
   return captureEvents(element, body).map(function(e) {
     return [e.type, e.charCode, e.keyCode];
   });
+}
+
+function getDocument() {
+  if (isInNode) {
+      return jsdom.jsdom();
+  }
+  return window.document;
 }
 
 describe('Keyboard', function() {
@@ -46,10 +60,11 @@ describe('Keyboard', function() {
   });
 
   describe('#createEventFromKeystroke', function() {
+    var document;
     var element;
 
     beforeEach(function() {
-      var document = jsdom.jsdom();
+      document = getDocument();
       element = document.body;
     });
 
@@ -153,7 +168,7 @@ describe('Keyboard', function() {
     var element;
 
     beforeEach(function() {
-      document = jsdom.jsdom();
+      document = getDocument();
       element = document.body;
     });
 
@@ -272,7 +287,7 @@ describe('Keyboard', function() {
     var input;
 
     beforeEach(function() {
-      document = jsdom.jsdom();
+      document = getDocument();
       input = document.createElement('input');
     });
 
@@ -338,7 +353,7 @@ describe('Keyboard', function() {
     var input;
 
     beforeEach(function() {
-      document = jsdom.jsdom();
+      document = getDocument();
       input = document.createElement('input');
     });
 
